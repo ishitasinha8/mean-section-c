@@ -39,30 +39,26 @@ export class CalculatorComponent implements OnInit {
   };
   //Use click events to get input data
   setCurrentInput = (value: string) => {
+    //for checking and updating value of currentInput
     if(this.currentInput ==undefined){
       this.currentInput = value;
     }
     else{
       this.currentInput += value;
     }
-    if(this.inputTracker.length==0){
+    //for updating value of input tracker
+    if(this.inputTracker.length==0 || this.isOperator()){ //push to input tracker directly if the previous value is an operator or length is 0
       console.log(1)
       this.inputTracker.push(this.currentInput)
     }
-    else{
-      if(this.isOperator()){
-        console.log("operator")
-        this.inputTracker.push(this.currentInput)
-      }
-      else{
+    else{ //otherwise, change the value of inputTracker.length-1 to add currentinput
         console.log("not operator")
         this.inputTracker[this.inputTracker.length-1] = this.currentInput
-      }
     }
     console.log(this.inputTracker)
   };
 
-  setCurrentOperation = (operation: string) => {
+  setCurrentOperation = (operation: string) => { //to add operators
     this.currentOperation = operation
     this.inputTracker.push(this.currentOperation)
     this.currentInput = undefined
@@ -76,14 +72,14 @@ export class CalculatorComponent implements OnInit {
     //You can loop over the input tracker array and recompute the result as the values in the array changes
     //String to number, to do mathematical computations
     //Find a method to check if a string can be converted into a number
-    //this.i=0
+    
     for(let e of this.inputTracker){
       if(this.inputTracker.length%3==0 && this.inputTracker.length!=0){
-        this.num1 = parseInt(this.inputTracker[this.inputTrackerIndex])
-        this.num2 = parseInt(this.inputTracker[this.inputTrackerIndex+2])
+        this.num1 = parseFloat(this.inputTracker[this.inputTrackerIndex])
+        this.num2 = parseFloat(this.inputTracker[this.inputTrackerIndex+2])
         //console.log(this.i+". num1 = "+this.num1)
         //console.log(this.i+". num2 = "+this.num2)
-        //this.i++
+        
         switch(this.inputTracker[this.inputTrackerIndex+1]){
           case '+':
             this.result = this.num1 + this.num2
